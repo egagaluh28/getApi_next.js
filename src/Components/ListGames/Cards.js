@@ -3,7 +3,7 @@ import { Card, Image, CardFooter, Button } from "@heroui/react";
 import React from "react";
 import { useRouter } from "next/navigation";
 
-export default function Cards({ posts = [] }) {
+export default function Cards({ games = [] }) {
   const router = useRouter();
 
   return (
@@ -14,14 +14,14 @@ export default function Cards({ posts = [] }) {
         </h2>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {posts.map((post) => (
+        {games.map((game) => (
           <Card
-            key={post.id}
+            key={game.id}
             className="max-w-xs bg-black border-1 border-white/50 transition-all hover:border-white hover:scale-101"
             radius="sm">
             <Image
               removeWrapper
-              alt={post.title}
+              alt={game.title}
               className="z-0 object-cover"
               style={{
                 borderTopLeftRadius: "0.25rem",
@@ -29,25 +29,25 @@ export default function Cards({ posts = [] }) {
                 borderBottomLeftRadius: "0",
                 borderBottomRightRadius: "0",
               }}
-              src={post.thumbnail}
+              src={game.thumbnail}
             />
             <CardFooter className="bottom-0 z-10 border-t-1 border-default-600/20">
               <div className="flex flex-grow gap-2 items-center">
                 <div className="flex flex-col">
                   <p className="text-md text-white font-bold">
-                    {post.title || "Judul Tidak Diketahui"}
+                    {game.title || "Judul Tidak Diketahui"}
                   </p>
                   <p className="text-tiny text-white/60">
-                    {post.release_date || "Rilis Tidak Diketahui"}
+                    {game.release_date || "Rilis Tidak Diketahui"}
                   </p>
                   <p className="font-bold text-tiny text-white/60">
-                    {post.genre || "Genre Tidak Diketahui"}
+                    {game.genre || "Genre Tidak Diketahui"}
                   </p>
                 </div>
               </div>
               <Button
                 as="a"
-                onClick={() => router.push(`/DetailGames/${post.id}`)}
+                onClick={() => router.push(`/DetailGames/${game.id}`)}
                 rel="noopener noreferrer"
                 className="text-tiny text-white bg-[#1B2430]"
                 color="default"
