@@ -6,10 +6,7 @@ import {
   NavbarContent,
   NavbarItem,
   NavbarMenuToggle,
-  NavbarMenu,
-  NavbarMenuItem,
   Link,
-  Input,
 } from "@heroui/react";
 import SearchBar from "../../Components/Filter/Search";
 
@@ -25,15 +22,8 @@ const BrandLogo = () => (
   </NavbarBrand>
 );
 
-export function Header({ onSearch }) {
+export function Header() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
-  const menuItems = [
-    { name: "Beranda", href: "#" },
-    { name: "Kategori", href: "#" },
-    { name: "Tentang", href: "#" },
-    { name: "Log Out", href: "#", color: "danger" },
-  ];
 
   return (
     <Navbar
@@ -86,19 +76,6 @@ export function Header({ onSearch }) {
       <NavbarContent className="hidden sm:flex" justify="end">
         <SearchBar />
       </NavbarContent>
-
-      <NavbarMenu className="bg-slate-900/95 text-white pt-8 px-4 mt-2">
-        {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item.name}-${index}`}>
-            <Link
-              className="w-full text-xl font-medium py-3 block rounded-lg px-3 transition-colors hover:bg-white/10"
-              href={item.href}
-              color={item.color || "white"}>
-              {item.name}
-            </Link>
-          </NavbarMenuItem>
-        ))}
-      </NavbarMenu>
     </Navbar>
   );
 }

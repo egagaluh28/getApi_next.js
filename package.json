@@ -17,6 +17,7 @@
     "@heroui/react": "^2.8.0-beta.15",
     "@next/env": "^15.4.1",
     "axios": "^1.10.0",
+    "dequal": "^2.0.3",
     "framer-motion": "^12.23.3",
     "next": "15.3.5",
     "react": "^19.0.0",
