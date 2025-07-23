@@ -10,7 +10,6 @@ export default function Home() {
         <HeroSection />
         <GameListContainer />
       </div>
-      
     </main>
   );
 }
