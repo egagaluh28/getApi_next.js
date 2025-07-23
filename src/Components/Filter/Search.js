@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Input, Image } from "@heroui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { getAllGames } from "../../lib/apiClient";
 
 export default function SearchBar() {
   const router = useRouter();
@@ -12,34 +13,39 @@ export default function SearchBar() {
   const [showDropdown, setShowDropdown] = useState(false);
   const searchRef = useRef(null);
 
-  const fetchGames = async () => {
-    try {
-      const apiKey = process.env.NEXT_PUBLIC_API_KEY;
-      const apiHost = process.env.NEXT_PUBLIC_API_HOST;
+  // const fetchGames = async () => {
+  //   try {
+  //     const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+  //     const apiHost = process.env.NEXT_PUBLIC_API_HOST;
 
-      const response = await fetch(
-        "https://free-to-play-games-database.p.rapidapi.com/api/games",
-        {
-          method: "GET",
-          headers: {
-            "x-rapidapi-key": apiKey,
-            "x-rapidapi-host": apiHost,
-          },
-        }
-      );
+  //     const response = await fetch(
+  //       "https://free-to-play-games-database.p.rapidapi.com/api/games",
+  //       {
+  //         method: "GET",
+  //         headers: {
+  //           "x-rapidapi-key": apiKey,
+  //           "x-rapidapi-host": apiHost,
+  //         },
+  //       }
+  //     );
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! status: ${response.status}`);
+  //     }
 
-      const data = await response.json();
-      setAllGames(data);
-    } catch (error) {
-      console.error("Error fetching games:", error);
-    }
-  };
+  //     const data = await response.json();
+  //     setAllGames(data);
+  //   } catch (error) {
+  //     console.error("Error fetching games:", error);
+  //   }
+  // };
 
-  useEffect(() => {
+  async function fetchData() {
+    const data = await getAllGames();
+    setAllGames(data);
+  }
+
+  function dropDown() {
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
         setShowDropdown(false);
@@ -49,7 +55,7 @@ export default function SearchBar() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -69,7 +75,8 @@ export default function SearchBar() {
   };
 
   useEffect(() => {
-    fetchGames();
+    dropDown();
+    fetchData();
   }, []);
 
   return (

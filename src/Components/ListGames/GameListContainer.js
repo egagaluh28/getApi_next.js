@@ -3,51 +3,59 @@
 import { useEffect, useState } from "react";
 import Cards from "./Cards";
 import { Spinner, Button } from "@heroui/react";
+import { getAllGames } from "../../lib/apiClient";
 
 export default function GameListContainer() {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [showAll, setShowAll] = useState(false);  
+  const [showAll, setShowAll] = useState(false);
 
-  const fetchGames = async () => {
-    // const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const apiKey = process.env.NEXT_PUBLIC_API_KEY;
-    const apiHost = process.env.NEXT_PUBLIC_API_HOST;
+  //const fetchGames = async () => {
+  // const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  // const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+  // const apiHost = process.env.NEXT_PUBLIC_API_HOST;
 
-    const url = "https://free-to-play-games-database.p.rapidapi.com/api/games";
-    const options = {
-      method: "GET",
-      headers: {
-        "x-rapidapi-key": apiKey,
-        "x-rapidapi-host": apiHost,
-      },
-    };
+  // const url = "https://free-to-play-games-database.p.rapidapi.com/api/games";
+  // const options = {
+  //   method: "GET",
+  //   headers: {
+  //     "x-rapidapi-key": apiKey,
+  //     "x-rapidapi-host": apiHost,
+  //   },
+  // };
 
-    // const url = "https://free-to-play-games-database.p.rapidapi.com/api/games";
-    // const options = {
-    //   method: "GET",
-    //   headers: {
-    //     "x-rapidapi-key": "5831ceba48mshbb759bb9ab4da82p1add27jsn6b3f38ad958f",
-    //     "x-rapidapi-host": "free-to-play-games-database.p.rapidapi.com",
-    //   },
-    // };
+  // const url = "https://free-to-play-games-database.p.rapidapi.com/api/games";
+  // const options = {
+  //   method: "GET",
+  //   headers: {
+  //     "x-rapidapi-key": "5831ceba48mshbb759bb9ab4da82p1add27jsn6b3f38ad958f",
+  //     "x-rapidapi-host": "free-to-play-games-database.p.rapidapi.com",
+  //   },
+  // };
 
-    try {
-      setLoading(true);
-      const response = await fetch(url, options);
-      const result = await response.json();
-      setGames(result);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  //   try {
+  //     setLoading(true);
+  //     const response = await fetch(url, options);
+  //     const result = await response.json();
+  //     setGames(result);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
+  async function fetchData() {
+    setLoading(true);
+    const data = await getAllGames();
+    setLoading(false);
+    setGames(data);
+  }
+  
   const handleShowAll = showAll ? games : games.slice(0, 12);
 
   useEffect(() => {
-    fetchGames();
+    fetchData();
   }, []);
 
   if (loading) {
@@ -64,7 +72,7 @@ export default function GameListContainer() {
       {!showAll && games.length > 12 && (
         <div className="text-center mt-8">
           <Button
-            onClick={() => setShowAll(true)}
+            onPress={() => setShowAll(true)}
             className="text-tiny text-white bg-[#1B2430]"
             variant="solid">
             Lihat Semua
