@@ -10,24 +10,11 @@ export default function SearchBar() {
   const [allGames, setAllGames] = useState([]);
   const [query, setQuery] = useState("");
   const [filteredGames, setFilteredGames] = useState([]);
-  const [showDropdown, setShowDropdown] = useState(false);
   const searchRef = useRef(null);
 
   async function fetchData() {
     const data = await getAllGames();
     setAllGames(data);
-  }
-
-  function dropDown() {
-    const handleClickOutside = (event) => {
-      if (searchRef.current && !searchRef.current.contains(event.target)) {
-        setShowDropdown(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
   }
 
   const handleInputChange = (e) => {
@@ -38,17 +25,9 @@ export default function SearchBar() {
       game.title.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredGames(filtered.slice(0, 5));
-    setShowDropdown(true);
-  };
-
-  const handleSelectGame = (id) => {
-    setQuery("");
-    setShowDropdown(false);
-    router.push(`/DetailGames/${id}`);
   };
 
   useEffect(() => {
-    dropDown();
     fetchData();
   }, []);
 
@@ -57,7 +36,7 @@ export default function SearchBar() {
       <Input
         value={query}
         onChange={handleInputChange}
-        onFocus={() => query && setShowDropdown(true)}
+        onFocus={() => query}
         placeholder="Cari game favoritmu..."
         radius="full"
         startContent={
@@ -69,7 +48,7 @@ export default function SearchBar() {
           input: "placeholder:text-slate-500",
         }}
       />
-      {showDropdown && filteredGames.length > 0 && (
+      {filteredGames.length > 0 && (
         <ul className="absolute mt-2 w-full overflow-hidden rounded-xl bg-slate-800 border border-slate-700 text-slate-300 shadow-lg z-50 max-h-80 overflow-y-auto">
           {filteredGames.map((game) => (
             <li

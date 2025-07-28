@@ -1,36 +1,18 @@
-import axios from 'axios';
-
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
-const API_HOST = process.env.NEXT_PUBLIC_API_HOST;
-const BASE_API_URL = process.env.NEXT_PUBLIC_API_URL;
-
+import axios from "axios";
 const api = axios.create({
-  baseURL: BASE_API_URL,
+  baseURL: process.env.RAPIDAPI_URL,
   headers: {
-    'x-rapidapi-key': API_KEY,
-    'x-rapidapi-host': API_HOST,
+    "x-rapidapi-key": process.env.RAPIDAPI_KEY,
+    "x-rapidapi-host": process.env.RAPIDAPI_HOST,
   },
 });
 
 export async function getAllGames() {
-  try {
-    const response = await api.get('/games');
-    return response.data;
-  } catch (error) {
-    console.error("Gagal mengambil semua game:", error);
-    throw error;
-  }
+  const resp = await api.get("/games");
+  return resp.data;
 }
 
-
 export async function getGameById(id) {
-  try {
-    const response = await api.get('/game', {
-      params: { id: id },
-    });
-    return response.data;
-  } catch (error) {
-    console.error(`Gagal mengambil game dengan ID ${id}:`, error);
-    throw error;
-  }
+  const resp = await api.get("/game", { params: { id } });
+  return resp.data;
 }
