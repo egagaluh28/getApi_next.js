@@ -73,6 +73,7 @@ export default function GameDetailUI({ game }) {
             priority
             quality={85}
           />
+          
           {allImages.length > 1 && (
             <>
               <button

@@ -1,85 +1,125 @@
-// components/ModalCards.js
-import React from "react";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Image } from "@nextui-org/react";
-import { XMarkIcon } from "@heroicons/react/24/solid"; // Untuk ikon tutup modal
+"use client";
 
-export default function ModalCards({ isOpen, onOpenChange, game }) {
-  if (!game) return null; // Jangan render modal jika tidak ada data game
+import { Dialog } from "@headlessui/react";
+import { Fragment, useState, useEffect } from "react";
+import Image from "next/image";
+import {
+  XMarkIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/24/solid";
+
+export default function ModalCards({ isOpen, onClose, game }) {
+  const allImages = game
+    ? [
+        game.thumbnail,
+        ...(Array.isArray(game.screenshots)
+          ? game.screenshots.map((s) => s.image)
+          : []),
+      ].filter(Boolean)
+    : [];
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    if (isOpen && game) setCurrentImageIndex(0);
+  }, [game, isOpen]);
+
+  const handlePrevImage = () => {
+    setCurrentImageIndex((prev) =>
+      prev === 0 ? allImages.length - 1 : prev - 1
+    );
+  };
+
+  const handleNextImage = () => {
+    setCurrentImageIndex((prev) =>
+      prev === allImages.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  if (!isOpen || !game) return null;
+
+  const currentMainImage = allImages[currentImageIndex];
 
   return (
-    <Modal
-      size="2xl"
-      isOpen={isOpen}
-      onOpenChange={onOpenChange}
-      placement="center"
-      scrollBehavior="inside" // Agar konten bisa di-scroll jika panjang
-      backdrop="blur" // Efek blur pada backdrop
-      className="bg-gray-800 text-white" // Warna dasar modal
-    >
-      <ModalContent>
-        {(onClose) => (
-          <>
-            <ModalHeader className="flex flex-col gap-1 relative pb-2 border-b border-gray-700">
-              <h2 className="text-2xl font-bold">{game.title}</h2>
-              <Button
-                isIconOnly
-                variant="light"
-                onPress={onClose}
-                className="absolute top-4 right-4 text-white hover:bg-gray-700/50"
-              >
-                <XMarkIcon className="w-6 h-6" />
-              </Button>
-            </ModalHeader>
-            <ModalBody className="py-6">
-              <div className="flex flex-col md:flex-row gap-6 items-start">
+    <Dialog
+      open={isOpen}
+      onClose={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/75">
+      <div className="bg-gray-900 rounded-2xl shadow-xl w-full max-w-3xl overflow-hidden">
+        <div className="relative w-full h-72 sm:h-80 lg:h-96">
+          {currentMainImage && (
+            <Image
+              src={currentMainImage}
+              alt={game.title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 text-white hover:bg-gray-700/50 p-2 rounded-full">
+            <XMarkIcon className="w-7 h-7" />
+          </button>
+
+          {allImages.length > 1 && (
+            <>
+              <button
+                onClick={handlePrevImage}
+                className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white p-2 rounded-full">
+                <ChevronLeftIcon className="w-6 h-6" />
+              </button>
+              <button
+                onClick={handleNextImage}
+                className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white p-2 rounded-full">
+                <ChevronRightIcon className="w-6 h-6" />
+              </button>
+            </>
+          )}
+        </div>
+
+        {allImages.length > 1 && (
+          <div className="flex gap-2 overflow-x-auto p-4 bg-gray-800">
+            {allImages.map((img, idx) => (
+              <div
+                key={idx}
+                onClick={() => setCurrentImageIndex(idx)}
+                className={`relative w-20 h-14 cursor-pointer rounded overflow-hidden border-2 ${
+                  idx === currentImageIndex
+                    ? "border-blue-500"
+                    : "border-transparent"
+                }`}>
                 <Image
-                  src={game.thumbnail}
-                  alt={game.title}
-                  width={300}
-                  height={200}
-                  className="object-cover rounded-lg shadow-lg flex-shrink-0 w-full md:w-auto"
+                  src={img}
+                  alt={`Screenshot ${idx + 1}`}
+                  fill
+                  className="object-cover"
                 />
-                <div className="flex-1">
-                  <p className="text-lg font-semibold mb-2">{game.short_description}</p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    <span className="inline-flex items-center py-1 px-3 rounded-full text-xs font-medium bg-blue-500/20 text-blue-300">
-                      {game.genre}
-                    </span>
-                    <span className="inline-flex items-center py-1 px-3 rounded-full text-xs font-medium bg-green-500/20 text-green-300">
-                      {game.platform}
-                    </span>
-                  </div>
-                  <p className="text-sm text-gray-300 mb-2">
-                    <span className="font-semibold text-gray-400">Penerbit:</span> {game.publisher}
-                  </p>
-                  <p className="text-sm text-gray-300 mb-2">
-                    <span className="font-semibold text-gray-400">Pengembang:</span> {game.developer}
-                  </p>
-                  <p className="text-sm text-gray-300">
-                    <span className="font-semibold text-gray-400">Tanggal Rilis:</span> {new Date(game.release_date).toLocaleDateString("id-ID", { year: "numeric", month: "long", day: "numeric" })}
-                  </p>
-                </div>
               </div>
-            </ModalBody>
-            <ModalFooter className="pt-4 border-t border-gray-700">
-              <Button
-                as="a"
-                href={game.game_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                color="primary"
-                radius="lg"
-                className="text-white font-semibold shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
-              >
-                Mainkan Sekarang
-              </Button>
-              <Button color="danger" variant="flat" onPress={onClose} radius="lg">
-                Tutup
-              </Button>
-            </ModalFooter>
-          </>
+            ))}
+          </div>
         )}
-      </ModalContent>
-    </Modal>
+
+        <div className="p-6">
+          <h2 className="text-3xl font-bold text-white mb-2">{game.title}</h2>
+          <p className="text-sm text-gray-400 mb-4">
+            Genre: {game.genre} | Platform: {game.platform}
+          </p>
+          <p className="text-gray-300 mb-6">{game.short_description}</p>
+          <div className="mt-6 pt-4 border-t border-gray-700 flex justify-end">
+            <a
+              href={game.game_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md font-semibold">
+              Mainkan Sekarang
+            </a>
+          </div>
+        </div>
+      </div>
+    </Dialog>
   );
 }
