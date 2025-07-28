@@ -1,35 +1,36 @@
-import axios from "axios";
+import axios from 'axios';
+
+const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+const API_HOST = process.env.NEXT_PUBLIC_API_HOST;
+const BASE_API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+const api = axios.create({
+  baseURL: BASE_API_URL,
+  headers: {
+    'x-rapidapi-key': API_KEY,
+    'x-rapidapi-host': API_HOST,
+  },
+});
 
 export async function getAllGames() {
-  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
-  const apiHost = process.env.NEXT_PUBLIC_API_HOST;
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  const options = {
-    method: "GET",
-    url: apiUrl,
-    headers: {
-      "x-rapidapi-key": apiKey,
-      "x-rapidapi-host": apiHost,
-    },
-  };
-
   try {
-    const response = await axios.request(options);
+    const response = await api.get('/games');
     return response.data;
   } catch (error) {
-    console.error("Error fetching games:", error);
+    console.error("Gagal mengambil semua game:", error);
     throw error;
   }
 }
 
+
 export async function getGameById(id) {
   try {
-    const response = await axios.get(
-      `https://www.freetogame.com/api/game?id=${id}`
-    );
+    const response = await api.get('/game', {
+      params: { id: id },
+    });
     return response.data;
   } catch (error) {
-    console.error("Error fetching game by ID:", error);
+    console.error(`Gagal mengambil game dengan ID ${id}:`, error);
     throw error;
   }
 }

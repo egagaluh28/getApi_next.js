@@ -1,65 +1,102 @@
 "use client";
-import { Card, Image, CardFooter, Button } from "@heroui/react";
+import {
+  Card,
+  Image,
+  CardFooter,
+  Button,
+  useDisclosure,
+} from "@nextui-org/react";
 import React from "react";
 import { useRouter } from "next/navigation";
+import ModalCards from "./ModalCards";
+import {
+  InformationCircleIcon,
+  PlayCircleIcon,
+} from "@heroicons/react/24/solid";
 
 export default function Cards({ games = [] }) {
   const router = useRouter();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [selectedGame, setSelectedGame] = React.useState(null);
+
+  const handlePreviewClick = (game) => {
+    setSelectedGame(game);
+    onOpen();
+  };
 
   return (
-    <main className="min-h-scree justify-center items-center ">
-      <div className="container mx-auto py-6 ">
-        <h2 className="text-xl font-bold   text-white text-start">
+    <main className="min-h-screen text-white py-8">
+      <div className="container mx-auto px-4 lg:px-8">
+        <h2 className="text-3xl font-bold mb-8 text-center lg:text-start animate-fade-in-up">
           Game Terbaru
         </h2>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {games.map((game) => (
-          <Card
-            key={game.id}
-            className="max-w-xs bg-black border-1 border-white/50 transition-all hover:border-white hover:scale-101"
-            radius="sm">
-            <Image
-              removeWrapper
-              alt={game.title}
-              className="z-0 object-cover"
-              style={{
-                borderTopLeftRadius: "0.25rem",
-                borderTopRightRadius: "0.25rem",
-                borderBottomLeftRadius: "0",
-                borderBottomRightRadius: "0",
-              }}
-              src={game.thumbnail}
-            />
-            <CardFooter className="bottom-0 z-10 border-t-1 border-default-600/20">
-              <div className="flex flex-grow gap-2 items-center">
-                <div className="flex flex-col">
-                  <p className="text-md text-white font-bold">
-                    {game.title || "Judul Tidak Diketahui"}
-                  </p>
-                  <p className="text-tiny text-white/60">
-                    {game.release_date || "Rilis Tidak Diketahui"}
-                  </p>
-                  <p className="font-bold text-tiny text-white/60">
-                    {game.genre || "Genre Tidak Diketahui"}
-                  </p>
-                </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+          {games.map((game) => (
+            <Card
+              key={game.id}
+              className="bg-black border border-gray-700 hover:border-blue-500 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-xl group cursor-pointer" // Tambahkan cursor-pointer
+            >
+              <div
+                className="relative overflow-hidden "
+                onClick={() => handlePreviewClick(game)}>
+                <Image
+                  removeWrapper
+                  alt={game.title}
+                  className="z-0  w-full  transition-transform duration-500 group-hover:scale-110 "
+                  src={game.thumbnail}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent"></div>
+                
               </div>
-              <Button
-                as="a"
-                onClick={() => router.push(`/DetailGames/${game.id}`)}
-                rel="noopener noreferrer"
-                className="text-tiny text-white bg-[#1B2430]"
-                color="default"
-                radius="sm"
-                size="sm"
-                variant="flat">
-                Lihat
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
+
+              <CardFooter className="flex flex-col items-stretch p-4 gap-3 bg-black ">
+                <div className="flex justify-between items-center w-full">
+                  <div className="flex flex-col text-left">
+                    <p className="text-xl font-bold truncate text-white">
+                      {game.title
+                        ? game.title.length > 15
+                          ? game.title.substring(0, 15) + "..."
+                          : game.title
+                        : "Judul Tidak Diketahui"}
+                    </p>
+                    <p className="text-tiny text-white/60">
+                      Publisher: {game.publisher || "N/A"}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-2 w-full mt-3">
+                  <Button
+                    startContent={<InformationCircleIcon className="w-5 h-5" />}
+                    onPress={() => handlePreviewClick(game)}
+                    className="flex-1 text-white bg-blue-700 hover:bg-blue-800 shadow-md hover:shadow-blue-500/50 transition-all duration-200"
+                    color="primary"
+                    radius="lg"
+                    size="md">
+                    Preview
+                  </Button>
+                  <Button
+                    startContent={<PlayCircleIcon className="w-5 h-5" />}
+                    onPress={() => router.push(`/DetailGames/${game.id}`)}
+                    className="flex-1 text-white bg-green-600 hover:bg-green-700 shadow-md hover:shadow-green-500/50 transition-all duration-200"
+                    color="success"
+                    radius="lg"
+                    size="md">
+                    Detail
+                  </Button>
+                </div>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
       </div>
+
+      <ModalCards
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        game={selectedGame}
+      />
     </main>
   );
 }

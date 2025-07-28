@@ -52,7 +52,7 @@ export default function GameListContainer() {
     setGames(data);
   }
   
-  const handleShowAll = showAll ? games : games.slice(0, 12);
+  const handleShowAll = showAll ? games : games.slice(0, 15);
 
   useEffect(() => {
     fetchData();
