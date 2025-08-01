@@ -5,6 +5,7 @@ import { Input, Image } from "@heroui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { getAllGames } from "../../lib/apiClient";
 
+
 export default function SearchBar() {
   const router = useRouter();
   const [allGames, setAllGames] = useState([]);

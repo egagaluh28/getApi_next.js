@@ -13,6 +13,7 @@
     "@heroicons/react": "^2.2.0",
     "@heroui/badge": "^2.2.15-beta.2",
     "@heroui/card": "^2.2.22-beta.2",
+    "@heroui/checkbox": "^2.3.24",
     "@heroui/modal": "^2.2.20-beta.3",
     "@heroui/navbar": "^2.2.21",
     "@heroui/react": "^2.8.0-beta.15",

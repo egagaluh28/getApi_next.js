@@ -1,15 +1,18 @@
 "use client";
 
 import { Dialog } from "@headlessui/react";
-import { Fragment, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import {
   XMarkIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/solid";
+import { Button } from "@heroui/react";
 
 export default function ModalCards({ isOpen, onClose, game }) {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
   const allImages = game
     ? [
         game.thumbnail,
@@ -18,8 +21,6 @@ export default function ModalCards({ isOpen, onClose, game }) {
           : []),
       ].filter(Boolean)
     : [];
-
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     if (isOpen && game) setCurrentImageIndex(0);
@@ -53,6 +54,7 @@ export default function ModalCards({ isOpen, onClose, game }) {
               src={currentMainImage}
               alt={game.title}
               fill
+              loading="lazy"
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
@@ -67,16 +69,16 @@ export default function ModalCards({ isOpen, onClose, game }) {
 
           {allImages.length > 1 && (
             <>
-              <button
-                onClick={handlePrevImage}
+              <Button
+                onPress={handlePrevImage}
                 className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white p-2 rounded-full">
                 <ChevronLeftIcon className="w-6 h-6" />
-              </button>
-              <button
-                onClick={handleNextImage}
+              </Button>
+              <Button
+                onPress={handleNextImage}
                 className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white p-2 rounded-full">
                 <ChevronRightIcon className="w-6 h-6" />
-              </button>
+              </Button>
             </>
           )}
         </div>
@@ -105,9 +107,22 @@ export default function ModalCards({ isOpen, onClose, game }) {
 
         <div className="p-6">
           <h2 className="text-3xl font-bold text-white mb-2">{game.title}</h2>
-          <p className="text-sm text-gray-400 mb-4">
-            Genre: {game.genre} | Platform: {game.platform}
-          </p>
+          <div className="flex flex-wrap gap-2 mb-2">
+            <span className="px-3 py-1 rounded-full bg-blue-600/30 text-blue-200 text-xs font-medium">
+              {game.genre}
+            </span>
+            <span className="px-3 py-1 rounded-full bg-green-600/30 text-green-200 text-xs font-medium">
+              {game.platform}
+            </span>
+            <span
+              className={`px-3 py-1 rounded-full text-xs font-medium ${
+                game.status === "Live"
+                  ? "bg-emerald-600/30 text-emerald-200"
+                  : "bg-red-600/30 text-red-200"
+              }`}>
+              {game.status}
+            </span>
+          </div>
           <p className="text-gray-300 mb-6">{game.short_description}</p>
           <div className="mt-6 pt-4 border-t border-gray-700 flex justify-end">
             <a

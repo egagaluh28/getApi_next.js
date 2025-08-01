@@ -1,12 +1,16 @@
 import { NextResponse } from "next/server";
-import { getAllGames } from "../../../lib/apiClient";
+import { getAllGamesRapid } from "../../../lib/apiServer";
 
-export async function GET() {
+export async function GET(req) {
   try {
-    const data = await getAllGames();
-    return NextResponse.json(data);
+    const games = await getAllGamesRapid();
+    // const limitedGames = games.slice(0, 40);
+    return NextResponse.json(games);
   } catch (err) {
-    console.error("Error fetching all games:", err);
-    return NextResponse.json({ error: "Failed to fetch games" }, { status: 500 });
+    console.error("Terjadi kesalahan saat mengambil daftar game:", err);
+    return NextResponse.json(
+      { error: "Gagal mengambil daftar game" },
+      { status: 500 }
+    );
   }
 }

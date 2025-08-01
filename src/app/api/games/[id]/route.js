@@ -1,12 +1,19 @@
 import { NextResponse } from "next/server";
-import { getGameById } from "../../../../lib/apiClient";
+import { getGameByIdRapid } from "../../../../lib/apiServer";
 
 export async function GET(req, { params }) {
   try {
-    const data = await getGameById(params.id);
+    const { id } = await params;
+    const data = await getGameByIdRapid(id);
     return NextResponse.json(data);
   } catch (err) {
-    console.error(`Error fetching game ID ${params.id}:`, err);
-    return NextResponse.json({ error: "Failed to fetch game detail" }, { status: 500 });
+    console.error(
+      `Terjadi kesalahan saat mengambil data game dengan ID ${params.id}:`,
+      err
+    );
+    return NextResponse.json(
+      { error: "Gagal mengambil detail game" },
+      { status: 500 }
+    );
   }
 }

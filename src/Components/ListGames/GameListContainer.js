@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Cards from "./Cards";
 import { Spinner, Button } from "@heroui/react";
+import { getAllGames } from "../../lib/apiClient";
 
 export default function GameListContainer() {
   const [games, setGames] = useState([]);
@@ -10,22 +10,17 @@ export default function GameListContainer() {
   const [showAll, setShowAll] = useState(false);
 
   const fetchData = async () => {
-    try {
-      setLoading(true);
-      const res = await axios.get("/api/games");
-      setGames(res.data);
-    } catch (error) {
-      console.error("Error fetching games:", error);
-    } finally {
-      setLoading(false);
-    }
+    setLoading(true);
+    const data = await getAllGames();
+    setGames(data);
+    setLoading(false);
   };
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  const displayedGames = showAll ? games : games.slice(0, 15);
+  const displayedGames = showAll ? games : games.slice(0, 9);
 
   if (loading) {
     return (
@@ -38,7 +33,7 @@ export default function GameListContainer() {
   return (
     <>
       <Cards games={displayedGames} />
-      {!showAll && games.length > 15 && (
+      {!showAll && games.length > 9 && (
         <div className="text-center mt-8">
           <Button
             onPress={() => setShowAll(true)}

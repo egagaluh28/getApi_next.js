@@ -15,8 +15,11 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
 } from "@heroicons/react/24/solid";
+import { Button } from "@heroui/react";
 
 export default function GameDetailUI({ game }) {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
   const formatTanggal = (tanggal) => {
     if (!tanggal) return "N/A";
     return new Date(tanggal).toLocaleDateString("id-ID", {
@@ -30,7 +33,6 @@ export default function GameDetailUI({ game }) {
     game.thumbnail,
     ...(game.screenshots || []).map((s) => s.image),
   ];
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => setCurrentImageIndex(0), [game]);
 
@@ -65,30 +67,16 @@ export default function GameDetailUI({ game }) {
 
           {allImages.length > 1 && (
             <>
-              <button
-                onClick={handlePrevImage}
+              <Button
+                onPress={handlePrevImage}
                 className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white p-3 rounded-full shadow-md transition">
                 <ArrowLeftIcon className="w-6 h-6" />
-              </button>
-              <button
-                onClick={handleNextImage}
+              </Button>
+              <Button
+                onPress={handleNextImage}
                 className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white p-3 rounded-full shadow-md transition">
                 <ArrowRightIcon className="w-6 h-6" />
-              </button>
-
-              <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-                {allImages.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setCurrentImageIndex(idx)}
-                    className={`h-2.5 w-2.5 rounded-full transition ${
-                      idx === currentImageIndex
-                        ? "bg-white scale-125"
-                        : "bg-gray-500/70"
-                    }`}
-                  />
-                ))}
-              </div>
+              </Button>
             </>
           )}
         </div>
