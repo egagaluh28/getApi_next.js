@@ -1,28 +1,20 @@
 "use client";
 
 import { CheckboxGroup, Checkbox } from "@heroui/react";
-import { useEffect, useState } from "react";
-import { getAllGames } from "../../lib/apiClient";
+import { useEffect, useState, useMemo } from "react";
 
-export default function FilterCheckbox({ selectedGenres, onChangeGenres }) {
-  const [internalSelected, setInternalSelected] = useState(["All"]);
-  const [genres, setGenres] = useState(["All"]);
+export default function FilterCheckbox({
+  selectedGenres,
+  onChangeGenres,
+  allGames = [],
+}) {
+  const [internalSelected, setInternalSelected] = useState(
+    selectedGenres || []
+  );
 
   useEffect(() => {
-    async function fetchGenres() {
-      try {
-        const games = await getAllGames();
-        const genreSet = new Set();
-        games.forEach((game) => {
-          if (game.genre) genreSet.add(game.genre);
-        });
-        setGenres(["All", ...Array.from(genreSet)]);
-      } catch (err) {
-        console.error("Failed to fetch genres:", err);
-      }
-    }
-    fetchGenres();
-  }, []);
+    setInternalSelected(selectedGenres || []);
+  }, [selectedGenres]);
 
   useEffect(() => {
     onChangeGenres(internalSelected);
@@ -37,6 +29,11 @@ export default function FilterCheckbox({ selectedGenres, onChangeGenres }) {
     }
     setInternalSelected(values);
   };
+
+  const genres = useMemo(() => {
+    const genreSet = new Set(allGames.map((g) => g.genre).filter(Boolean));
+    return ["All", ...Array.from(genreSet)];
+  }, [allGames]);
 
   return (
     <CheckboxGroup

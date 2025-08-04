@@ -8,6 +8,7 @@ const api = axios.create({
   },
 });
 
+
 export async function getAllGamesRapid() {
   try {
     const response = await api.get("/games");

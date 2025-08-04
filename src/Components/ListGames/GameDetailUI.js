@@ -55,7 +55,7 @@ export default function GameDetailUI({ game }) {
       <div
         className="absolute inset-0 bg-cover bg-center blur-2xl opacity-30"
         style={{ backgroundImage: `url(${currentMainImage})` }}></div>
-      <div className="relative z-10 w-full max-w-6xl p-6 md:p-10 bg-gradient-to-br from-gray-900/95 to-gray-800/95 rounded-3xl shadow-2xl border border-gray-700/50">
+      <div className="relative z-10 w-full max-w-6xl p-6 md:p-10 bg-gradient-to-br from-gray-900/30 to-gray-800/30 rounded-3xl shadow-2xl border border-gray-700/50">
         <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-6">
           <Image
             src={currentMainImage}
@@ -81,7 +81,7 @@ export default function GameDetailUI({ game }) {
           )}
         </div>
         {allImages.length > 1 && (
-          <div className="flex gap-2 mb-4 rounded-3xl overflow-x-auto p-4 bg-gray-800/50">
+          <div className="flex gap-2 mb-4 rounded-3xl overflow-x-auto p-4 ">
             {allImages.map((img, idx) => (
               <div
                 key={idx}

@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import {
   InformationCircleIcon,
@@ -11,9 +12,15 @@ import { Button } from "@heroui/react";
 import { getGameById } from "../../lib/apiClient";
 import FilterCheckbox from "../../Components/Filter/FilterCheckbox";
 
-export default function Cards({ games }) {
-  const [selectedGenres, setSelectedGenres] = useState(["All"]);
-  const [query, setQuery] = useState("");
+export default function Cards({
+  games,
+  showAll,
+  onFilteredCountChange,
+  selectedGenres,
+  setSelectedGenres,
+  query,
+  setQuery,
+}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedGame, setSelectedGame] = useState(null);
   const [loadingGame, setLoadingGame] = useState(false);
@@ -26,19 +33,35 @@ export default function Cards({ games }) {
     setLoadingGame(false);
   };
 
+  // const handlePreviewClick = (id) => {
+  //   setIsModalOpen(true);
+  //   setLoadingGame(true);
+
+  //   const selected = games.find((g) => g.id === id);
+  //   setSelectedGame(selected || null);
+
+  //   setLoadingGame(false);
+  // };
+
   const filteredGames = games.filter((game) => {
-    const filterQuery = game.title.toLowerCase().includes(query.toLowerCase());
+    const filterQuery = game.title
+      .toLowerCase()
+      .includes((query || "").toLowerCase());
     const filterGenre =
       selectedGenres.includes("All") || selectedGenres.includes(game.genre);
     return filterQuery && filterGenre;
   });
 
+  useEffect(() => {
+    if (onFilteredCountChange) onFilteredCountChange(filteredGames.length);
+  }, [filteredGames.length, onFilteredCountChange]);
+
+  const displayedGames = showAll ? filteredGames : filteredGames.slice(0, 9);
+
   return (
     <main className="text-white py-8 px-4">
       <div className="mb-8">
-        <h2 className="text-3xl font-bold mb-4 text-center lg:text-start">
-          Game Terbaru
-        </h2>
+        
         <input
           type="text"
           value={query}
@@ -53,12 +76,16 @@ export default function Cards({ games }) {
           <FilterCheckbox
             selectedGenres={selectedGenres}
             onChangeGenres={setSelectedGenres}
+            allGames={games}
           />
         </div>
 
         <div className="lg:col-span-3">
+          <h2 className="text-2xl font-bold mb-4 text-center lg:text-start">
+            Game Terbaru
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {filteredGames.map((game) => (
+            {displayedGames.map((game) => (
               <div
                 key={game.id}
                 className="bg-black border border-gray-700 hover:border-blue-500 transition-all duration-300 transform hover:scale-105 shadow-xl group rounded-lg overflow-hidden cursor-pointer flex flex-col">

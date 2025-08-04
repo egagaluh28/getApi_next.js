@@ -59,7 +59,7 @@ export default function ModalCards({ isOpen, onClose, game }) {
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
 
           <button
             onClick={onClose}
@@ -84,7 +84,7 @@ export default function ModalCards({ isOpen, onClose, game }) {
         </div>
 
         {allImages.length > 1 && (
-          <div className="flex gap-2 overflow-x-auto p-4 bg-gray-800">
+          <div className="flex gap-2 overflow-x-auto p-4 bg-gray-800/50">
             {allImages.map((img, idx) => (
               <div
                 key={idx}
@@ -125,13 +125,13 @@ export default function ModalCards({ isOpen, onClose, game }) {
           </div>
           <p className="text-gray-300 mb-6">{game.short_description}</p>
           <div className="mt-6 pt-4 border-t border-gray-700 flex justify-end">
-            <a
+            <Button
               href={game.game_url}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md font-semibold">
               Mainkan Sekarang
-            </a>
+            </Button>
           </div>
         </div>
       </div>
