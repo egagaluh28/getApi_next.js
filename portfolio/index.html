@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Portofolio — Nama Anda</title>
+    <meta name="description" content="Portofolio pribadi: proyek, pengalaman, dan kontak." />
+    <meta name="color-scheme" content="dark light" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script defer src="/main.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Lewati ke konten</a>
+
+    <header class="site-header" role="banner">
+      <nav class="nav container" aria-label="Navigasi utama">
+        <a class="logo" href="#hero" aria-label="Beranda">
+          <img src="/assets/icons/logo.svg" alt="Logo" width="28" height="28" />
+          <span>Nama Anda</span>
+        </a>
+        <button id="themeToggle" class="theme-toggle" aria-label="Ganti tema" aria-pressed="false">
+          <span class="icon">🌙</span>
+        </button>
+        <ul class="nav-links">
+          <li><a href="#about">Tentang</a></li>
+          <li><a href="#projects">Proyek</a></li>
+          <li><a href="#contact">Kontak</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section id="hero" class="hero section">
+        <div class="container grid-2">
+          <div class="hero-text">
+            <h1>Halo, saya <span class="highlight">Nama Anda</span></h1>
+            <p class="subtitle">Front-end Engineer yang fokus pada performa, aksesibilitas, dan pengalaman pengguna.</p>
+            <div class="cta-group">
+              <a class="btn primary" href="#projects">Lihat Proyek</a>
+              <a class="btn ghost" href="/assets/CV.pdf" target="_blank" rel="noopener">Unduh CV</a>
+            </div>
+            <ul class="socials" aria-label="Sosial media">
+              <li><a href="#" aria-label="GitHub"><img src="/assets/icons/github.svg" alt="GitHub" width="24" height="24" /></a></li>
+              <li><a href="#" aria-label="LinkedIn"><img src="/assets/icons/linkedin.svg" alt="LinkedIn" width="24" height="24" /></a></li>
+              <li><a href="#" aria-label="Email"><img src="/assets/icons/mail.svg" alt="Email" width="24" height="24" /></a></li>
+            </ul>
+          </div>
+          <div class="hero-media">
+            <div class="avatar">
+              <img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?q=80&w=640&auto=format&fit=crop" alt="Foto profil" width="320" height="320" loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section">
+        <div class="container grid-2">
+          <div>
+            <h2>Tentang Saya</h2>
+            <p>Saya membangun antarmuka yang cepat, terukur, dan inklusif. Berpengalaman dengan React, TypeScript, dan desain sistem.</p>
+            <ul class="badges">
+              <li>React</li>
+              <li>TypeScript</li>
+              <li>Node.js</li>
+              <li>Tailwind</li>
+              <li>A11y</li>
+            </ul>
+          </div>
+          <div>
+            <div class="card">
+              <h3>Highlight</h3>
+              <ul class="list">
+                <li>Menaikkan skor Lighthouse performa dari 70→98.</li>
+                <li>Membangun desain sistem komponen 40+.</li>
+                <li>Memimpin migrasi JS ke TypeScript.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" class="section alt">
+        <div class="container">
+          <h2>Proyek Pilihan</h2>
+          <div class="projects-grid">
+            <article class="project-card">
+              <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop" alt="Tangkapan layar proyek" loading="lazy" />
+              <div class="project-content">
+                <h3>Analytics Dashboard</h3>
+                <p>Dashboard interaktif dengan chart real‑time, state management yang modular, dan caching cerdas.</p>
+                <div class="tags"><span>React</span><span>Recharts</span><span>Vite</span></div>
+                <div class="actions">
+                  <a class="btn small" href="#">Demo</a>
+                  <a class="btn small ghost" href="#">Kode</a>
+                </div>
+              </div>
+            </article>
+            <article class="project-card">
+              <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=800&auto=format&fit=crop" alt="Tangkapan layar proyek" loading="lazy" />
+              <div class="project-content">
+                <h3>Design System</h3>
+                <p>Pustaka komponen aksesibel dengan theming, dokumentasi, dan playground.</p>
+                <div class="tags"><span>TypeScript</span><span>Storybook</span><span>CSS Variables</span></div>
+                <div class="actions">
+                  <a class="btn small" href="#">Dokumentasi</a>
+                  <a class="btn small ghost" href="#">Repo</a>
+                </div>
+              </div>
+            </article>
+            <article class="project-card">
+              <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800&auto=format&fit=crop" alt="Tangkapan layar proyek" loading="lazy" />
+              <div class="project-content">
+                <h3>Jamstack Blog</h3>
+                <p>Blog statis super cepat dengan pencarian client‑side dan komentar serverless.</p>
+                <div class="tags"><span>Next.js</span><span>MDX</span><span>Vercel</span></div>
+                <div class="actions">
+                  <a class="btn small" href="#">Live</a>
+                  <a class="btn small ghost" href="#">Sumber</a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="section">
+        <div class="container">
+          <h2>Kontak</h2>
+          <form class="contact-form" name="contact" netlify>
+            <div class="form-grid">
+              <label>
+                <span>Nama</span>
+                <input type="text" name="name" placeholder="Nama Anda" required />
+              </label>
+              <label>
+                <span>Email</span>
+                <input type="email" name="email" placeholder="email@contoh.com" required />
+              </label>
+            </div>
+            <label>
+              <span>Pesan</span>
+              <textarea name="message" rows="5" placeholder="Tulis pesan Anda..." required></textarea>
+            </label>
+            <button type="submit" class="btn primary">Kirim</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>© <span id="year"></span> Nama Anda. Dibuat dengan semangat dan kopi.</p>
+      </div>
+    </footer>
+  </body>
+</html>
